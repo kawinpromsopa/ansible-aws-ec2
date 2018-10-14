@@ -1,0 +1,14 @@
+STATE_RES_NAME: <username>
+ec2_aws_access_key: <access_key>
+ec2_aws_secret_key: <secret_key>
+ec2_region: <region>
+ec2_instance_type: <instance_type>
+ec2_image: <image>
+ec2_keypair: <namekeypair>
+ec2_volume_size: <disk_size>
+ec2_count: <number_instance>
+ec2_security_group_id: <security_group>
+ec2_subnet_id: <subnet>
+ec2_tag_Type: <tag_type>
+ec2_tag_Role: <tag_role>
+

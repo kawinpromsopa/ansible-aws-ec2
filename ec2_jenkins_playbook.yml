@@ -1,0 +1,58 @@
+---
+- name: Configure EC2 instance
+  hosts: awsec2_docker_host
+  connection: ssh
+  remote_user: ubuntu
+  sudo: true
+
+
+  tasks:
+  - name: Update repositories cache
+    apt:
+      update_cache: yes
+
+  # - name: Ensure a list of jenkins packages installed
+  #   apt:
+  #     name: "{{ packages }}"
+  #   vars:
+  #     packages:
+  #     - oracle-java8-installer
+  #     - oracle-java8-set-default
+  #     - python-dev
+  #     - build-essential
+
+  - name: Ensure the jenkins apt repository key is installed
+    apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io.key state=present
+    become: yes
+
+  - name: Ensure the repository is configured
+    apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+    become: yes
+
+  - name: ensure jenkins is installed
+    apt: name=jenkins update_cache=yes
+    become: yes
+
+  - name: ensure jenkins is running
+    service: name=jenkins state=started
+
+  # - name: Start service jenkins, if not started
+  #   systemd: state=started name=jenkins
+
+  # - name: Restart service jenkins, in all cases
+  #   systemd:
+  #   name: jenkins
+  #   state: reloaded
+
+  # - name: Enable service jenkins, and not touch the state
+  #   systemd:
+  #   name: jenkins
+  #   enabled: yes
+  #   masked: no
+
+  - name: Copy jeknins passwd to file
+    command: sudo cat /var/lib/jenkins/secrets/initialAdminPassword > /home/ubuntu/initialAdminPassword
+
+  
+  
+  

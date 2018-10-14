@@ -1,0 +1,19 @@
+[localhost]
+# tell Ansible which Python interpreter on system has boto for AWS
+127.0.0.1 ansible_python_interpreter=/usr/bin/python
+
+[awsec2_jenkins_host] 
+# tell Ansible which Python3 interpreter on system has boto for AWS
+awsec2 ansible_ssh_host=<ip_ec2> ansible_ssh_port=<port_ec2>  ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python3
+
+#[awsec2_docker_host]
+#awsec2 ansible_ssh_host=<ip_ec2> ansible_ssh_port=<port_ec2> ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python3
+
+# add empty entries for groups that ec2 plugin will populate
+[tag_Role_ecs_shippable_aye0aye]
+
+[ecsinstances:children]
+tag_Role_ecs_shippable_aye0aye
+
+
+

@@ -1,0 +1,84 @@
+---
+- name: Configure EC2 instance
+  hosts: <host>
+  connection: ssh
+  remote_user: <user>
+  sudo: true
+
+
+  tasks:
+  - name: Update repositories cache
+    apt:
+      update_cache: yes
+
+  - name: Ensure a list of packages installed
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - ntp
+      - vim
+      - git
+      - rsync
+      - wget
+      - byobu
+      - mlocate
+      - net-tools
+      - nodejs-legacy
+
+  - name: Setup alternate SSH port
+    lineinfile:
+      dest: "/etc/ssh/sshd_config"
+      regexp: "^Port"
+      line: "Port 2242"
+
+  - name: Setup timezone Asia/Bangkok
+    command : timedatectl set-timezone Asia/Bangkok
+
+  - name: Allow port 80
+    ufw:
+      rule: allow
+      port: 80 
+
+  - name: Allow port 8080
+    ufw:
+      rule: allow
+      port: 8080
+
+  - name: Allow port 443
+    ufw:
+      rule: allow
+      port: 443
+
+  - name: Allow port 2242
+    ufw:
+      rule: allow
+      port: 2242
+
+    - name: Allow port 30000
+    ufw:
+      rule: allow
+      port: 30000
+        
+  - name: Allow everything and enable UFW
+    ufw:
+      state: enabled
+      policy: allow
+
+  - name: Restart service OPENSSH
+    command: /etc/init.d/ssh restart
+
+
+  - name: Setup alternate SSH port
+    lineinfile:
+      dest: "/etc/ssh/sshd_config"
+      regexp: "^Port"
+      line: "Port 2242"
+        
+  - name: Allow everything and enable UFW
+    ufw:
+      state: enabled
+      policy: allow
+
+  - name: Restart service OPENSSH
+    command: /etc/init.d/ssh restart

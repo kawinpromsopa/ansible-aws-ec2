@@ -1,0 +1,29 @@
+---
+- name: Configure EC2 instance
+  hosts: <host>
+  connection: ssh
+  remote_user: <user>
+  sudo: true
+
+
+  tasks:
+  - name: Update repositories cache
+    apt:
+      update_cache: yes
+
+  - name: Ensure a list of docker packages installed
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - docker.io
+      - docker-compose
+      - python-pip
+      - python-dev
+      - build-essential
+  
+  - name: Ensure docker users are added to the docker group.
+    user:
+      name: ubuntu
+      groups: docker
+      append: true
